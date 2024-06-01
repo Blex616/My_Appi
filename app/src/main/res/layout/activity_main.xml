@@ -11,9 +11,9 @@
         android:id="@+id/txtUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:autofillHints=""
         android:hint="@string/userid"
-        android:autofillHints="" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/txtTitle"
@@ -37,5 +37,22 @@
         android:layout_height="wrap_content"
         android:text="@string/enviar" />
 
+    <Button
+        android:id="@+id/btnNuevo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nuevo" />
+
+    <Button
+        android:id="@+id/btnActualizar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/actualizar" />
+
+    <Button
+        android:id="@+id/btnEliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/eliminar" />
 
 </LinearLayout>

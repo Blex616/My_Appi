@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     EditText txtUser, txtTitle, txtBody;
     Button btnEnviar;
+    Button btnNuevo;
+    Button btnActualizar;
+    Button btnEliminar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +37,50 @@ public class MainActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtBody = findViewById(R.id.txtBody);
         btnEnviar = findViewById(R.id.btnEnviar);
+        btnNuevo = findViewById(R.id.btnNuevo);
+        btnActualizar = findViewById(R.id.btnActualizar);
+        btnEliminar = findViewById(R.id.btnEliminar);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getById();
-                enviarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
-                actualizarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
-                eliminarWs();
+                getById(txtUser.getText().toString());
             }
         });
 
+        btnNuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enviarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
+            }
+        });
+
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actualizarWs(txtTitle.getText().toString(), txtBody.getText().toString(), txtUser.getText().toString());
+
+            }
+        });
+
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminarWs(txtUser.getText().toString());
+
+            }
+        });
     }
 
-    private void getById() {
+    private void getById(final String idUser) {
+        System.out.println("Hola, mundo!");
+        String url = "https://jsonplaceholder.typicode.com/posts/";
 
-        String url = "https://jsonplaceholder.typicode.com/posts/2";
+        if(!idUser.isEmpty()) {
+            url += idUser;
+        } else {
+            url += "2";
+        }
 
         StringRequest postResquest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -59,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     txtUser.setText(jsonObject.getString("userId"));
                     txtTitle.setText(jsonObject.getString("title"));
                     txtBody.setText(jsonObject.getString("body"));
+                    Toast.makeText(MainActivity.this, "Respuesta del Servidor = " + response, Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -75,12 +107,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void enviarWs(final String title, final String body, final String userId) {
 
+        if(userId.isEmpty() || title.isEmpty()) {
+            Toast.makeText(MainActivity.this, "UserId y Title deben estar llenos", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String url = "https://jsonplaceholder.typicode.com/posts";
 
         StringRequest postResquest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(MainActivity.this, "Respuesta del Servidor = " + response, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Nuevo, Resp del Servidor = " + response, Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -102,12 +139,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void actualizarWs(final String title, final String body, final String Id) {
 
-        String url = "https://jsonplaceholder.typicode.com/posts/1";
+        if(Id.isEmpty() || title.isEmpty()) {
+            Toast.makeText(MainActivity.this, "UserId y Title deben estar llenos", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String url = "https://jsonplaceholder.typicode.com/posts/" + Id;
 
         StringRequest postResquest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(MainActivity.this, "Resuesta del Servidor = " + response, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Actualizar resp del Servidor = " + response, Toast.LENGTH_LONG).show();
 
             }
         }, new Response.ErrorListener() {
@@ -129,15 +171,20 @@ public class MainActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(postResquest);
     }
 
-    private void eliminarWs() {
+    private void eliminarWs(final String userId) {
 
-        String url = "https://jsonplaceholder.typicode.com/posts/1";
+        if(userId.isEmpty()) {
+            Toast.makeText(MainActivity.this, "UserId debe estar diligenciado", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String url = "https://jsonplaceholder.typicode.com/posts/" + userId;
 
         StringRequest postResquest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Toast.makeText(MainActivity.this, "Respuesta del Servidor = " + response, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Eliminar, resp del Servidor = " + response, Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             @Override

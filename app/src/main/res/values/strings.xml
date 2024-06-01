@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">My_Appi</string>
-    <string name="enviar">Enviar</string>
+    <string name="enviar">Obtener por id</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="nuevo">Nuevo</string>
+    <string name="obtenerTodo">Obtener todo</string>
     <string name="body">Body</string>
     <string name="userid">UserId</string>
     <string name="title">Title</string>
